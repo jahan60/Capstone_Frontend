@@ -1,5 +1,16 @@
 
+import React from "react";
+import "../styles/pages.css";
 
-export default function Dashboard (){
+
+function Dashboard (){
+    return (
+        <div className="page">
+            <h1>Dashboard</h1>
+            <p>Welcome to your dashboard.</p>
+        </div>
+    )
     
 }
+
+export default Dashboard;
