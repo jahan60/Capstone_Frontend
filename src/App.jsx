@@ -7,7 +7,7 @@ import Analytics from "./pages/Analytics.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Inventory from "./pages/Inventory.jsx";
 import Alerts from "./pages/Alerts.jsx";
- 
+import ProductForm from "./components/ProductForm";
 function App() {
 
 
@@ -20,6 +20,7 @@ function App() {
         <Route path = "/inventory" element ={<Inventory />} />
         <Route path = "/alerts" element ={<Alerts />} />
         <Route path = "/analytics" element ={<Analytics />} />
+        <Route path="/products/add" element={<ProductForm />} />
       </Routes>
     </Router>
   )

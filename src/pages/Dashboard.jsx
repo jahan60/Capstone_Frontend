@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/pages.css";
 
 function Dashboard() {
+  const navigate = useNavigate();
+
   return (
     <div className="page">
       <h1>Dashboard</h1>
@@ -12,6 +15,13 @@ function Dashboard() {
         <div className="dashboard-card">📉 Low Stock</div>
         <div className="dashboard-card">📊 Analytics</div>
       </div>
+
+      <button
+        className="add-item-btn"
+        onClick={() => navigate("/products/add")}
+      >
+        Add Item
+      </button>
     </div>
   );
 }
