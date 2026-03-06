@@ -30,7 +30,7 @@ export default function ProductForm() {
       console.log("Saved:", res.data);
       alert("Product added successfully!");
 
-      nav("/inventory"); // optional redirect
+      nav("/inventory"); 
     } catch (err) {
       console.error(err);
       alert("Error saving product");

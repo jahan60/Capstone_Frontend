@@ -8,6 +8,8 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Inventory from "./pages/Inventory.jsx";
 import Alerts from "./pages/Alerts.jsx";
 import ProductForm from "./components/ProductForm";
+import EditProductForm from "./components/EditProductForm.jsx";
+
 function App() {
 
 
@@ -24,7 +26,7 @@ function App() {
 
 
         <Route path="/products/add" element={<ProductForm />} />
-      
+        <Route path="/edit-product/:id" element={<EditProductForm />} />
       </Routes>
     </Router>
   )
