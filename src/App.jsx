@@ -20,7 +20,11 @@ function App() {
         <Route path = "/inventory" element ={<Inventory />} />
         <Route path = "/alerts" element ={<Alerts />} />
         <Route path = "/analytics" element ={<Analytics />} />
+        <Route path="/low-stock" element={<Inventory />} /> 
+
+
         <Route path="/products/add" element={<ProductForm />} />
+      
       </Routes>
     </Router>
   )

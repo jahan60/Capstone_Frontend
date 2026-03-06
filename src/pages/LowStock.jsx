@@ -1,42 +1,28 @@
 import React from "react";
 import "../styles/pages.css";
 
-function Inventory() {
+function LowStock() {
   return (
     <div className="page">
-      <h1>Inventory</h1>
+      <h1>Low Stock Items</h1>
 
       <table className="inventory-table">
         <thead>
           <tr>
             <th>Name</th>
             <th>SKU</th>
-            <th>Category</th>
             <th>Qty</th>
             <th>Min Qty</th>
-            <th>Price</th>
             <th>Status</th>
           </tr>
         </thead>
 
         <tbody>
           <tr>
-            <td>Example Product</td>
-            <td>SKU123</td>
-            <td>Electronics</td>
-            <td>10</td>
-            <td>5</td>
-            <td>$20</td>
-            <td className="status in-stock">In Stock</td>
-          </tr>
-
-          <tr>
             <td>Example Product 2</td>
             <td>SKU999</td>
-            <td>Clothing</td>
             <td>2</td>
             <td>5</td>
-            <td>$15</td>
             <td className="status low-stock">Low Stock</td>
           </tr>
         </tbody>
@@ -45,4 +31,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default LowStock;

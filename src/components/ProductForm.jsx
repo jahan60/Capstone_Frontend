@@ -1,23 +1,41 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function ProductForm() {
-  const [form, setForm] = useState({
+  const nav = useNavigate();
+  const [formData, setFormData] = useState({
     name: "",
     sku: "",
     category: "",
     quantity: "",
     minQuantity: "",
-    price: ""
+    price: "",
   });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  function handleChange(e) {
+    if (e.target.type === "checkbox") {
+      setFormData({ ...formData, [e.target.name]: e.target.checked });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Product saved:", form);
+    console.log("Product saved:", formData);
     alert("Product added!");
+
+    //make request
+
+    try {
+      let res = await axios.post("http://localhost:3000/api/products", form);
+      console.log(res.data);
+      alert("Product saved!");
+    } catch (err) {
+      console.error(err);
+      alert("Error saving product");
+    }
   };
 
   return (
@@ -28,7 +46,7 @@ export default function ProductForm() {
         <input
           name="name"
           placeholder="Product Name"
-          value={form.name}
+          value={formData.name}
           onChange={handleChange}
           required
         />
@@ -36,7 +54,7 @@ export default function ProductForm() {
         <input
           name="sku"
           placeholder="SKU"
-          value={form.sku}
+          value={formData.sku}
           onChange={handleChange}
           required
         />
@@ -44,7 +62,7 @@ export default function ProductForm() {
         <input
           name="category"
           placeholder="Category"
-          value={form.category}
+          value={formData.category}
           onChange={handleChange}
           required
         />
@@ -53,7 +71,7 @@ export default function ProductForm() {
           name="quantity"
           placeholder="Quantity"
           type="number"
-          value={form.quantity}
+          value={formData.quantity}
           onChange={handleChange}
           required
         />
@@ -62,7 +80,7 @@ export default function ProductForm() {
           name="minQuantity"
           placeholder="Minimum Quantity"
           type="number"
-          value={form.minQuantity}
+          value={formData.minQuantity}
           onChange={handleChange}
           required
         />
@@ -71,7 +89,7 @@ export default function ProductForm() {
           name="price"
           placeholder="Price"
           type="number"
-          value={form.price}
+          value={formData.price}
           onChange={handleChange}
           required
         />
