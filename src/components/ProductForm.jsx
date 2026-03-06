@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 
 export default function ProductForm() {
   const nav = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     sku: "",
@@ -14,24 +15,22 @@ export default function ProductForm() {
   });
 
   function handleChange(e) {
-    if (e.target.type === "checkbox") {
-      setFormData({ ...formData, [e.target.name]: e.target.checked });
-    } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Product saved:", formData);
-    alert("Product added!");
-
-    //make request
 
     try {
-      let res = await axios.post("http://localhost:3000/api/products", form);
-      console.log(res.data);
-      alert("Product saved!");
+      const res = await axios.post(
+        "http://localhost:3000/api/products",
+        formData
+      );
+
+      console.log("Saved:", res.data);
+      alert("Product added successfully!");
+
+      nav("/inventory"); // optional redirect
     } catch (err) {
       console.error(err);
       alert("Error saving product");

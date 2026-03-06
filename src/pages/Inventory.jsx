@@ -1,7 +1,23 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import "../styles/pages.css";
 
 function Inventory() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await axios.get("http://localhost:3000/api/products");
+        setProducts(res.data);
+      } catch (err) {
+        console.error("Error loading products", err);
+      }
+    }
+
+    loadProducts();
+  }, []);
+
   return (
     <div className="page">
       <h1>Inventory</h1>
@@ -20,25 +36,26 @@ function Inventory() {
         </thead>
 
         <tbody>
-          <tr>
-            <td>Example Product</td>
-            <td>SKU123</td>
-            <td>Electronics</td>
-            <td>10</td>
-            <td>5</td>
-            <td>$20</td>
-            <td className="status in-stock">In Stock</td>
-          </tr>
+          {products.map((p) => (
+            <tr key={p._id}>
+              <td>{p.name}</td>
+              <td>{p.sku}</td>
+              <td>{p.category}</td>
+              <td>{p.quantity}</td>
+              <td>{p.minQuantity}</td>
+              <td>${p.price}</td>
 
-          <tr>
-            <td>Example Product 2</td>
-            <td>SKU999</td>
-            <td>Clothing</td>
-            <td>2</td>
-            <td>5</td>
-            <td>$15</td>
-            <td className="status low-stock">Low Stock</td>
-          </tr>
+              <td
+                className={
+                  p.quantity <= p.minQuantity
+                    ? "status low-stock"
+                    : "status in-stock"
+                }
+              >
+                {p.quantity <= p.minQuantity ? "Low Stock" : "In Stock"}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
