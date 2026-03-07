@@ -9,9 +9,10 @@ import Inventory from "./pages/Inventory.jsx";
 import Alerts from "./pages/Alerts.jsx";
 import ProductForm from "./components/ProductForm";
 import EditProductForm from "./components/EditProductForm.jsx";
+import LowStock from "./pages/LowStock.jsx";
+
 
 function App() {
-
 
   return (
     <Router>
@@ -22,7 +23,7 @@ function App() {
         <Route path = "/inventory" element ={<Inventory />} />
         <Route path = "/alerts" element ={<Alerts />} />
         <Route path = "/analytics" element ={<Analytics />} />
-        <Route path="/low-stock" element={<Inventory />} /> 
+        <Route path="/low-stock" element={<LowStock />} /> 
 
 
         <Route path="/products/add" element={<ProductForm />} />
