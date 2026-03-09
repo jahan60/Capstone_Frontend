@@ -1,55 +1,66 @@
 
-import "../styles/pages.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "../styles/pages.css";
 
-
-const Alerts = () => {
+function Alerts() {
   const [alerts, setAlerts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  //useeffect runs once when the page loads because dependcy array is empty
+
   useEffect(() => {
-    const fetchAlerts = async () => { //fetches alerts from the backend
+    async function loadAlerts() {
       try {
-        //get request
-        const res = await axios.get("http://localhost:3000/api/alerts");
-        //Save the data we got into our alerts state
+        const token = localStorage.getItem("token");
+
+        const res = await axios.get("http://localhost:3000/api/alerts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         setAlerts(res.data);
-      } catch (error) {
-        console.error("Error fetching alerts:", error);
-      } finally {
-        //if error stop the loading state
-        setLoading(false);
+      } catch (err) {
+        console.error("Error loading alerts", err);
       }
-    };
+    }
 
-    fetchAlerts();
+    loadAlerts();
   }, []);
-    return (
-    <div className="alerts-page">
-      <h2>Alerts</h2>
-       
-      {loading && <p>Loading alerts...</p>}  
 
-      {!loading && alerts.length === 0 && (
+  return (
+    <div className="page">
+      <h1>Alerts</h1>
+
+      {alerts.length === 0 ? (
         <p>No alerts found.</p>
-      )}
+      ) : (
+        <table className="inventory-table">
+          <thead>
+            <tr>
+              <th>Alert ID</th>
+              <th>Product ID</th>
+              <th>Type</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Created</th>
+            </tr>
+          </thead>
 
-      <div className="alerts-list">
-        {alerts.map(alert => ( //loop through each alerts and diplay it
-          <div key={alert._id} className="alert-card">
-            <h4>{alert.AlertType.toUpperCase()}</h4>
-            <p>{alert.Message}</p>
-            <p><strong>Status:</strong> {alert.Status}</p>
-            <p><strong>Product:</strong> {alert.ProductId}</p>
-            
-            <p className="timestamp">{new Date(alert.createdAt).toLocaleString()}</p>
-          </div> // convert timestamp into readable timestamp
-        ))}
-      </div>
+          <tbody>
+            {alerts.map((a) => (
+              <tr key={a._id}>
+                <td>{a.Id}</td>
+                <td>{a.ProductId}</td>
+                <td>{a.AlertType}</td>
+                <td>{a.Message}</td>
+                <td>{a.Status}</td>
+                <td>{new Date(a.createdAt).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
-};
+}
 
 export default Alerts;

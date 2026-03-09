@@ -9,10 +9,24 @@ function Analytics() {
 
   // Load products on page load
   useEffect(() => {
-    fetch("http://localhost:3000/api/products")
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .catch(err => console.error("Error loading products:", err));
+    async function loadProducts() {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("http://localhost:3000/api/products", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Error loading products:", err);
+      }
+    }
+
+    loadProducts();
   }, []);
 
   // Call AI prediction
@@ -23,10 +37,15 @@ function Analytics() {
     setPrediction("");
 
     try {
+      const token = localStorage.getItem("token");
+
       const res = await fetch("http://localhost:3000/api/ai/predict-stock", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: selectedSku })
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId: selectedSku }),
       });
 
       const data = await res.json();

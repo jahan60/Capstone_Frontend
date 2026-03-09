@@ -1,69 +1,90 @@
-import { useEffect, useState  } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function EditProductForm ({ product, setEdit, setProducts }) {
-  if(!product) return <p>Loading...</p>;
-    //prefilled form with the existing data 
-    const [formData, setFormData ]= useState({
+export default function EditProductForm({ product, setEdit, setProducts }) {
+  if (!product) return <p>Loading...</p>;
+
+  const [formData, setFormData] = useState({
     name: product.name || "",
     sku: product.sku || "",
     category: product.category || "",
     quantity: product.quantity || "",
     minQuantity: product.minQuantity || "",
     price: product.price || "",
-
-
   });
 
+  // keep form in sync if product changes
+  useEffect(() => {
+    setFormData({
+      name: product.name || "",
+      sku: product.sku || "",
+      category: product.category || "",
+      quantity: product.quantity || "",
+      minQuantity: product.minQuantity || "",
+      price: product.price || "",
+    });
+  }, [product]);
 
-//Handle input changes
-function handleChange(e){
+  function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
 
-}
-
-//submit the updated product
-async function handleSubmit(e){
+  async function handleSubmit(e) {
     e.preventDefault();
-    try{
-       //send put request
-       let res=await axios.put(
+
+    try {
+      const token = localStorage.getItem("token");
+      console.log("Submitting edit with data:", formData);
+
+      const res = await axios.put(
         `http://localhost:3000/api/products/${product._id}`,
-        formData
+        {
+          ...formData,
+          quantity: Number(formData.quantity),
+          minQuantity: Number(formData.minQuantity),
+          price: Number(formData.price),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
-  //update the product list
-  setProducts((prev) =>
-        prev.map((p) =>
-          p._id === res.data.product._id ? res.data.product : p
-        )
+      console.log("Update response:", res.data);
+
+      // handle both shapes: { product: {...} } or just {...}
+      const updated = res.data.product ? res.data.product : res.data;
+
+      setProducts((prev) =>
+        prev.map((p) => (p._id === updated._id ? updated : p))
       );
 
-//close the form
-setEdit(false)
-        
-    }catch(err){
-        console.error(err.message);
-        alert("Error updating product")
+      setEdit(false);
+    } catch (err) {
+      console.error("Error updating product:", err.response || err);
+      alert("Error updating product");
     }
-}
-return(
+  }
+
+  return (
     <fieldset className="product-edit-box">
-        <legend>Edit Product</legend>
+      <legend>Edit Product</legend>
 
-        <form onSubmit = {handleSubmit} className ="Product-form">
-            <label>
-                Name:
-                <input 
-                type="text"
-                name="name"
-                onChange={handleChange}
-                value={formData.name}
-                required />
-            </label>
+      <form onSubmit={handleSubmit} className="Product-form">
+        <label>
+          Name:
+          <input
+            type="text"
+            name="name"
+            onChange={handleChange}
+            value={formData.name}
+            required
+          />
+        </label>
 
-            <label>
+        <label>
           SKU:
           <input
             type="text"
@@ -118,10 +139,8 @@ return(
           />
         </label>
 
-      <input type ="submit" value = "Save Changes" className = "submit-btn" />
-         </form>
+        <input type="submit" value="Save Changes" className="submit-btn" />
+      </form>
     </fieldset>
-
-);
-
+  );
 }

@@ -1,26 +1,28 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import EditProductForm from "../components/EditProductForm"; 
+import EditProductForm from "../components/EditProductForm";
 import "../styles/pages.css";
 
 function Inventory() {
-  // Stores all products from the backend
   const [products, setProducts] = useState([]);
-
-  // Stores the product the user wants to edit
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // Controls whether the edit form is visible
   const [edit, setEdit] = useState(false);
 
   const nav = useNavigate();
 
-  // Loads products when the page first loads
+  // Load products on page load
   useEffect(() => {
     async function loadProducts() {
       try {
-        const res = await axios.get("http://localhost:3000/api/products");
+        const token = localStorage.getItem("token");
+
+        const res = await axios.get("http://localhost:3000/api/products", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         setProducts(res.data);
       } catch (err) {
         console.error("Error loading products", err);
@@ -30,14 +32,19 @@ function Inventory() {
     loadProducts();
   }, []);
 
-  // Deletes a product by its ID
+  // Delete product
   async function handleDelete(id) {
     if (!window.confirm("Delete this product?")) return;
 
     try {
-      await axios.delete(`http://localhost:3000/api/products/${id}`);
+      const token = localStorage.getItem("token");
 
-      // Removes the deleted product from the UI
+      await axios.delete(`http://localhost:3000/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       setProducts(products.filter((p) => p._id !== id));
     } catch (err) {
       console.error(err);
@@ -49,7 +56,6 @@ function Inventory() {
     <div className="page">
       <h1>Inventory</h1>
 
-      
       <table className="inventory-table">
         <thead>
           <tr>
@@ -74,10 +80,9 @@ function Inventory() {
               <td>{p.minQuantity}</td>
               <td>${p.price}</td>
 
-           
               <td
                 className={
-                  p.quantity <= p.minQuantity //stock status
+                  p.quantity <= p.minQuantity
                     ? "status low-stock"
                     : "status in-stock"
                 }
@@ -85,13 +90,12 @@ function Inventory() {
                 {p.quantity <= p.minQuantity ? "Low Stock" : "In Stock"}
               </td>
 
-              
               <td>
                 <button
                   className="edit-btn"
                   onClick={() => {
-                    setSelectedProduct(p);   // Saves the product to edit
-                    setEdit(true);           // Opens the edit form
+                    setSelectedProduct(p);
+                    setEdit(true);
                   }}
                 >
                   Edit
@@ -109,8 +113,7 @@ function Inventory() {
         </tbody>
       </table>
 
-      
-      {edit && (     //Shows the edit form when edit is true
+      {edit && (
         <EditProductForm
           product={selectedProduct}
           setEdit={setEdit}
