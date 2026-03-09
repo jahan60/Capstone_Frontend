@@ -1,7 +1,7 @@
 
 [Backend repo](https://github.com/jahan60/Capstone_Backend.git)
 
-## Smart Stock Manager:
+## Smart Stock Manager
 Frontend:
 ## Introduction: 
 This is the frontend of the Smart Stock Manager application. It provides a clean interface for managing products, tracking stock levels, viewing alerts, and checking analytics using AI.  

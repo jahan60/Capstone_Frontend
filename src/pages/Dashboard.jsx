@@ -9,6 +9,13 @@ function Dashboard() {
     <div className="page">
       <h1>Dashboard</h1>
 
+      <div className="dashboard-header">
+        <h2>Welcome to Smart Stock Manager</h2>
+        <p>Your inventory overview at a glance.</p>
+      </div>
+
+
+
       <div className="dashboard-cards">
 
         <div 
