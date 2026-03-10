@@ -381,7 +381,7 @@ body {
   margin-bottom: 25px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 
-  /* Smooth transitions */
+  
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -395,7 +395,7 @@ body {
   font-size: 24px;
   font-weight: 600;
 
-  /* Text transition */
+  
   transition: letter-spacing 0.3s ease;
 }
 
@@ -405,7 +405,7 @@ body {
 
 .dashboard-header p {
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 18px;
   opacity: 0.9;
 
   transition: opacity 0.3s ease;
@@ -413,4 +413,23 @@ body {
 
 .dashboard-header:hover p {
   opacity: 1;
+}
+
+/* Edit Product Heading Container */
+.edit-form-header {
+  background: #f7f9fc;
+  padding: 18px 22px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #e3e6ee;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Heading Text */
+.edit-form-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  letter-spacing: 0.5px;
 }

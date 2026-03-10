@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import EditProductForm from "../components/EditProductForm";
 import "../styles/pages.css";
 
@@ -113,7 +113,7 @@ function Inventory() {
         </tbody>
       </table>
 
-      {edit && (
+       {edit && (
         <EditProductForm
           product={selectedProduct}
           setEdit={setEdit}
@@ -123,5 +123,6 @@ function Inventory() {
     </div>
   );
 }
+ 
 
 export default Inventory;

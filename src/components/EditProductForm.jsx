@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import api from "../api.js";
 
 export default function EditProductForm({ product, setEdit, setProducts }) {
   if (!product) return <p>Loading...</p>;
@@ -14,7 +13,6 @@ export default function EditProductForm({ product, setEdit, setProducts }) {
     price: product.price || "",
   });
 
-  // keep form in sync if product changes
   useEffect(() => {
     setFormData({
       name: product.name || "",
@@ -32,30 +30,25 @@ export default function EditProductForm({ product, setEdit, setProducts }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log("FORM SUBMITTED!");
+    console.log("PRODUCT ID:", product._id);
 
     try {
-      const token = localStorage.getItem("token");
-      console.log("Submitting edit with data:", formData);
+      const payload = {
+        ...formData,
+        quantity: Number(formData.quantity),
+        minQuantity: Number(formData.minQuantity),
+        price: Number(formData.price),
+      };
 
-      const res = await axios.put(
-        `http://localhost:3000/api/products/${product._id}`,
-        {
-          ...formData,
-          quantity: Number(formData.quantity),
-          minQuantity: Number(formData.minQuantity),
-          price: Number(formData.price),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      console.log("PAYLOAD:", payload);
+
+      
+      const res = await api.put(`/products/${product._id}`, payload);
 
       console.log("Update response:", res.data);
 
-      // handle both shapes: { product: {...} } or just {...}
-      const updated = res.data.product ? res.data.product : res.data;
+      const updated = res.data.product || res.data;
 
       setProducts((prev) =>
         prev.map((p) => (p._id === updated._id ? updated : p))
@@ -70,7 +63,12 @@ export default function EditProductForm({ product, setEdit, setProducts }) {
 
   return (
     <fieldset className="product-edit-box">
-      <legend>Edit Product</legend>
+      
+       <div className="edit-form-header">
+      <h2>Edit Product</h2>
+    </div>
+
+
 
       <form onSubmit={handleSubmit} className="Product-form">
         <label>
