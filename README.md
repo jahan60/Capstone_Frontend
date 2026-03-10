@@ -23,9 +23,13 @@ React Router: for page Navigation.
 CSS: for styling
 Axios: for API requests
 React Hooks: for state, side effects, page navigaton and URL parameters.
+React Router Icons.
 
 ## Authentication: 
 The frontend includes a login page that sends user credentials to the backend. Once logged in:
 1. A JWT token is stored.
 2. Protected pages Dashboard, Inventory, Alerts, and Analytics require authenticaton.
 Unauthorized users are redirected to the login page.
+
+Resources:
+https://www.youtube.com/watch?v=zKlpiQvPKHI&t=212s
