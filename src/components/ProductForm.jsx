@@ -22,9 +22,16 @@ export default function ProductForm() {
     e.preventDefault();
 
     try {
+      const token = localStorage.getItem("token");
       const res = await axios.post(
         "http://localhost:3000/api/products",
-        formData
+        formData,
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        }
+
       );
 
       console.log("Saved:", res.data);
